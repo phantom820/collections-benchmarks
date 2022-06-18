@@ -1,0 +1,12 @@
+HashSet,Add,712013.1
+LinkedHashSet,Add,777245.94
+TreeSet,Add,1.2408262e+06
+HashSet,Contains,275.3
+LinkedHashSet,Contains,191.29999
+TreeSet,Contains,192.9
+HashSet,Remove,745520.5
+LinkedHashSet,Remove,753700.7
+TreeSet,Remove,1.1722269e+06
+LinkedHashSet,Iterator,104.8
+TreeSet,Iterator,708.5
+HashSet,Iterator,171.5

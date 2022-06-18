@@ -1,0 +1,12 @@
+SliceQueue,Front,3089.5
+ListDequeue,Front,7451.2
+SliceDequeue,Front,3369.7002
+ListQueue,Front,6636.3
+SliceQueue,RemoveFront,438.7
+ListDequeue,RemoveFront,927.5
+SliceDequeue,RemoveFront,1445.1
+ListQueue,RemoveFront,962
+ListDequeue,AddFront,769165.6
+SliceDequeue,AddFront,3.8832575e+06
+ListDequeue,RemoveBack,1006
+SliceDequeue,RemoveBack,865.39996

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+CPU=1
+BENCHTIME=1s
+COUNT=1
+
+rm *.csv
+go test ./sets -bench=. -benchtime=$BENCHTIME -count $COUNT -cpu $CPU -benchmem >> sets.csv
+go test ./lists -bench=. -benchtime=$BENCHTIME -count $COUNT -cpu $CPU -benchmem >> lists.csv
+
