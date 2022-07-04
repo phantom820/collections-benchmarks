@@ -1,6 +1,8 @@
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/phantom820/collections v0.3.0-alpha.2.5 h1:eYWSPb0NIi2xo7LE5SL1LzEsC2YUCWt/z6Ad2Vvo7hs=
 github.com/phantom820/collections v0.3.0-alpha.2.5/go.mod h1:4Ssq36ogqMGZP+yA7LckIyncH5s6nMJY3y4rRQgVB00=
+github.com/phantom820/collections v0.3.0-alpha.2.6 h1:p1iF6eYc7W7RlPCywRBXbedoxXprCchqq5EryDsDk74=
+github.com/phantom820/collections v0.3.0-alpha.2.6/go.mod h1:4Ssq36ogqMGZP+yA7LckIyncH5s6nMJY3y4rRQgVB00=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/stretchr/testify v1.7.1 h1:5TQK59W5E3v0r2duFAb7P95B6hEeOyEnHRa8MjYSMTY=
 gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c h1:dUUwHk2QECo/6vqA44rthZ8ie2QXMNeKRTHCNY2nXvo=

@@ -31,7 +31,7 @@ func BenchmarkAdd(f *os.File, benchmark *benchmarks.Benchmark) {
 
 	for key, list := range lists {
 		r := benchmark.Benchmark(key, func() {
-			for i := 0; i < data.Size; i++ {
+			for i := 0; i < benchmark.Setup().Operations(); i++ {
 				list.Add(types.String(fmt.Sprint(i)))
 			}
 		})
@@ -53,9 +53,11 @@ func BenchmarkContains(f *os.File, benchmark *benchmarks.Benchmark) {
 	}
 
 	for key, list := range lists {
-		data.InitializeWith(list, 1, 1, data.Size)
+		data.Initialize(list, benchmark.Setup().Size())
 		r := benchmark.Benchmark(key, func() {
-			list.Contains(types.String(fmt.Sprint(rand.Intn(list.Len()))))
+			for i := 0; i < benchmark.Setup().Operations(); i++ {
+				list.Contains(types.String(fmt.Sprint(rand.Intn(list.Len()))))
+			}
 		})
 		fmt.Fprintf(f, "%s,%s,%v\n", r.Name, "Contains", r.Duration)
 	}
@@ -74,10 +76,10 @@ func BenchmarkRemove(f *os.File, benchmark *benchmarks.Benchmark) {
 	}
 
 	for key, list := range lists {
-		data.InitializeWith(list, 1, 1, data.Size)
+		data.Initialize(list, benchmark.Setup().Size())
 		r := benchmark.Benchmark(key, func() {
-			for i := 0; i < list.Len(); i++ {
-				list.Remove(types.String(fmt.Sprint(rand.Intn(data.MaxSize))))
+			for i := 0; i < benchmark.Setup().Operations(); i++ {
+				list.Remove(types.String(fmt.Sprint(rand.Intn(benchmark.Setup().Size()))))
 			}
 		})
 		fmt.Fprintf(f, "%s,%s,%v\n", r.Name, "Remove", r.Duration)
@@ -97,7 +99,7 @@ func BenchmarkIterator(f *os.File, benchmark *benchmarks.Benchmark) {
 	}
 
 	for key, list := range lists {
-		data.InitializeWith(list, 1, 1, data.Size)
+		data.Initialize(list, benchmark.Setup().Size())
 		r := benchmark.Benchmark(key, func() {
 			list.Iterator()
 		})
@@ -119,7 +121,7 @@ func BenchmarkReverse(f *os.File, benchmark *benchmarks.Benchmark) {
 	}
 
 	for key, list := range lists {
-		data.InitializeWith(list, 1, 1, data.Size)
+		data.Initialize(list, benchmark.Setup().Size())
 		r := benchmark.Benchmark(key, func() {
 			list.Reverse()
 		})
@@ -139,9 +141,9 @@ func BenchmarkRemoveBack(f *os.File, benchmark *benchmarks.Benchmark) {
 		"Vector":      vector,
 	}
 	for key, list := range lists {
-		data.InitializeWith(list, 1, 1, data.Size)
+		data.Initialize(list, benchmark.Setup().Size())
 		r := benchmark.Benchmark(key, func() {
-			for i := 0; i < list.Len(); i++ {
+			for i := 0; i < benchmark.Setup().Operations(); i++ {
 				list.RemoveBack()
 			}
 		})
@@ -162,9 +164,9 @@ func BenchmarkRemoveAt(f *os.File, benchmark *benchmarks.Benchmark) {
 	}
 
 	for key, list := range lists {
-		data.InitializeWith(list, 1, 1, data.Size)
+		data.Initialize(list, benchmark.Setup().Size())
 		r := benchmark.Benchmark(key, func() {
-			for i := 0; i < list.Len(); i++ {
+			for i := 0; i < benchmark.Setup().Operations(); i++ {
 				list.RemoveAt(rand.Intn(list.Len()))
 			}
 		})
@@ -185,7 +187,7 @@ func BenchmarkSort(f *os.File, benchmark *benchmarks.Benchmark) {
 		"Vector":      vector,
 	}
 	for key, list := range lists {
-		data.InitializeReverseWith(list, 1, 1, data.Size)
+		data.InitializeReverse(list, benchmark.Setup().Size())
 		r := benchmark.Benchmark(key, func() {
 			sort.Sort[types.String](list)
 		})

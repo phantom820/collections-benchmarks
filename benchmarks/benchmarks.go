@@ -20,17 +20,39 @@ func (timer *Timer) Duration() float32 {
 }
 
 type Setup struct {
-	count  int // number of measurements to aggregate.
-	trials int // number of samples needed to produce a single measurement.
+	count      int // number of measurements to aggregate.
+	trials     int // number of samples needed to produce a single measurement.
+	operations int // number of operations to do for number of operations based benchmarks.
+	size       int // size of collections to be used. (size>=count * trial* operations)
 }
 
-func NewSetup(trials int, count int) *Setup {
-	return &Setup{trials: trials, count: count}
+func (setup *Setup) Count() int {
+	return setup.count
+}
+
+func (setup *Setup) Trials() int {
+	return setup.trials
+}
+
+func (setup *Setup) Operations() int {
+	return setup.operations
+}
+
+func (setup *Setup) Size() int {
+	return setup.size
+}
+
+func NewSetup(count, trials, operations, size int) *Setup {
+	return &Setup{count: count, trials: trials, operations: operations, size: size}
 }
 
 type Benchmark struct {
 	setup *Setup
 	timer *Timer
+}
+
+func (benchmark *Benchmark) Setup() *Setup {
+	return benchmark.setup
 }
 
 func NewBenchmark(setup *Setup, timer *Timer) *Benchmark {

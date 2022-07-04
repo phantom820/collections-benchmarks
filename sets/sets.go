@@ -29,7 +29,7 @@ func BenchmarkAdd(f *os.File, benchmark *benchmarks.Benchmark) {
 	}
 	for key, set := range sets {
 		r := benchmark.Benchmark(key, func() {
-			for i := 0; i < data.Size; i++ {
+			for i := 0; i < benchmark.Setup().Operations(); i++ {
 				set.Add(types.String(i))
 			}
 		})
@@ -51,9 +51,11 @@ func BenchmarkContains(f *os.File, benchmark *benchmarks.Benchmark) {
 	}
 
 	for key, set := range sets {
-		data.Initialize(set)
+		data.Initialize(set, benchmark.Setup().Size())
 		r := benchmark.Benchmark(key, func() {
-			set.Contains(types.String(fmt.Sprint(rand.Intn(set.Len()))))
+			for i := 0; i < benchmark.Setup().Operations(); i++ {
+				set.Contains(types.String(fmt.Sprint(rand.Intn(set.Len()))))
+			}
 		})
 		fmt.Fprintf(f, "%s,%s,%v\n", r.Name, "Contains", r.Duration)
 	}
@@ -72,10 +74,10 @@ func BenchmarkRemove(f *os.File, benchmark *benchmarks.Benchmark) {
 	}
 
 	for key, set := range sets {
-		data.InitializeWith(set, 1, 1, data.Size)
+		data.Initialize(set, benchmark.Setup().Size())
 		r := benchmark.Benchmark(key, func() {
-			for i := 0; i < set.Len(); i++ {
-				set.Remove(types.String(fmt.Sprint(rand.Intn(data.MaxSize))))
+			for i := 0; i < benchmark.Setup().Operations(); i++ {
+				set.Remove(types.String(fmt.Sprint(rand.Intn(benchmark.Setup().Size()))))
 			}
 		})
 		fmt.Fprintf(f, "%s,%s,%v\n", r.Name, "Remove", r.Duration)
@@ -95,7 +97,7 @@ func BenchmarkIterator(f *os.File, benchmark *benchmarks.Benchmark) {
 	}
 
 	for key, set := range sets {
-		data.Initialize(set)
+		data.Initialize(set, benchmark.Setup().Size())
 		r := benchmark.Benchmark(key, func() {
 			set.Iterator()
 		})

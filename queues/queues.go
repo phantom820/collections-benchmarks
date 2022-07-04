@@ -29,9 +29,9 @@ func BenchmarkFront(f *os.File, benchmark *benchmarks.Benchmark) {
 	}
 
 	for key, queue := range queues {
-		data.InitializeWith(queue, 1, 1, data.MaxSize)
+		data.Initialize(queue, benchmark.Setup().Size())
 		r := benchmark.Benchmark(key, func() {
-			for i := 0; i < queue.Len(); i++ {
+			for i := 0; i < benchmark.Setup().Operations(); i++ {
 				queue.Front()
 			}
 		})
@@ -55,7 +55,7 @@ func BenchmarkRemoveFront(f *os.File, benchmark *benchmarks.Benchmark) {
 	}
 
 	for key, queue := range queues {
-		data.InitializeWith(queue, 1, 1, data.MaxSize)
+		data.Initialize(queue, benchmark.Setup().Size())
 		r := benchmark.Benchmark(key, func() {
 			for i := 0; i < queue.Len(); i++ {
 				queue.RemoveFront()
@@ -77,9 +77,9 @@ func BenchmarkBack(f *os.File, benchmark *benchmarks.Benchmark) {
 	}
 
 	for key, queue := range queues {
-		data.InitializeWith(queue, 1, 1, data.MaxSize)
+		data.Initialize(queue, benchmark.Setup().Size())
 		r := benchmark.Benchmark(key, func() {
-			for i := 0; i < queue.Len(); i++ {
+			for i := 0; i < benchmark.Setup().Operations(); i++ {
 				queue.Back()
 			}
 		})
@@ -98,9 +98,9 @@ func BenchmarkRemoveBack(f *os.File, benchmark *benchmarks.Benchmark) {
 	}
 
 	for key, queue := range queues {
-		data.InitializeWith(queue, 1, 1, data.MaxSize)
+		data.Initialize(queue, benchmark.Setup().Size())
 		r := benchmark.Benchmark(key, func() {
-			for i := 0; i < queue.Len(); i++ {
+			for i := 0; i < benchmark.Setup().Operations(); i++ {
 				queue.RemoveBack()
 			}
 		})
@@ -120,7 +120,7 @@ func BenchmarkAddFront(f *os.File, benchmark *benchmarks.Benchmark) {
 
 	for key, queue := range queues {
 		r := benchmark.Benchmark(key, func() {
-			for i := 0; i < data.Size; i++ {
+			for i := 0; i < benchmark.Setup().Operations(); i++ {
 				queue.AddFront(types.String(fmt.Sprint(i)))
 			}
 		})
@@ -128,9 +128,34 @@ func BenchmarkAddFront(f *os.File, benchmark *benchmarks.Benchmark) {
 	}
 }
 
+func BenchmarkAdd(f *os.File, benchmark *benchmarks.Benchmark) {
+
+	listQueue := listqueue.New[types.String]()
+	sliceQueue := slicequeue.New[types.String]()
+	listDequeue := listdequeue.New[types.String]()
+	sliceDequeue := slicedequeue.New[types.String]()
+
+	queues := map[string]queues.Queue[types.String]{
+		"ListQueue":    listQueue,
+		"SliceQueue":   sliceQueue,
+		"ListDequeue":  listDequeue,
+		"SliceDequeue": sliceDequeue,
+	}
+
+	for key, queue := range queues {
+		r := benchmark.Benchmark(key, func() {
+			for i := 0; i < benchmark.Setup().Operations(); i++ {
+				queue.Add(types.String(fmt.Sprint(i)))
+			}
+		})
+		fmt.Fprintf(f, "%s,%s,%v\n", r.Name, "Add", r.Duration)
+	}
+}
+
 func Benchmark(f *os.File, benchmark *benchmarks.Benchmark) {
 	BenchmarkFront(f, benchmark)
 	BenchmarkRemoveFront(f, benchmark)
 	BenchmarkAddFront(f, benchmark)
+	BenchmarkAdd(f, benchmark)
 	BenchmarkRemoveBack(f, benchmark)
 }
